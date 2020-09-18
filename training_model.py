@@ -23,16 +23,16 @@ def recall_multiclass(labels, preds):
 
 
 puc_train = pd.read_json(
-    "storage/2020-09-12_puc_augmented.json", orient="records")
-puc_test = pd.read_json("storage/puc_test_30.json", orient="records")
+    "/storage/2020-09-12_puc_augmented.json", orient="records")
+puc_test = pd.read_json("/storage/puc_test_30.json", orient="records")
 
 puj_train = pd.read_json(
-    "storage/2020-09-12_puj_augmented.json", orient="records")
-puj_test = pd.read_json("storage/puj_test_30.json", orient="records")
+    "/storage/2020-09-12_puj_augmented.json", orient="records")
+puj_test = pd.read_json("/storage/puj_test_30.json", orient="records")
 
 aurora_train = pd.read_json(
-    "storage/2020-09-12_aurora_augmented.json", orient="records")
-aurora_test = pd.read_json("storage/aurora_test_30.json", orient="records")
+    "/storage/2020-09-12_aurora_augmented.json", orient="records")
+aurora_test = pd.read_json("/storage/aurora_test_30.json", orient="records")
 
 train = pd.concat([puc_train, puj_train, aurora_train], ignore_index=True)
 test = pd.concat([puc_test, puj_test, aurora_test], ignore_index=True)
@@ -67,7 +67,7 @@ results, model_outputs, predictions = model.eval_model(
 predictions = np.argmax(model_outputs, axis=-1).tolist()
 print(results)
 
-with open("storage/2020-09-16_roberta_results.json", "w") as f:
+with open("/storage/2020-09-16_roberta_results.json", "w") as f:
     json.dump(results, f)
-with open("storage/2020-09-16_roberta_predictions.json", "w") as f:
+with open("/storage/2020-09-16_roberta_predictions.json", "w") as f:
     json.dump(predictions, f)
