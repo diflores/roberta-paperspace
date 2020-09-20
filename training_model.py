@@ -76,7 +76,7 @@ model_args = {
 model = ClassificationModel(
     model_type, model_name, num_labels=len(train["first_sdg"].unique()), args=model_args
 )
-model.train_model(train, test)
+model.train_model(train, eval_df=test)
 print("Training has finished.")
 
 results, model_outputs, predictions = model.eval_model(
