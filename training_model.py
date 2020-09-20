@@ -59,7 +59,7 @@ print("Data loaded successfully.")
 
 
 model_args = {
-    "learning_rate": 1e-5,
+    "learning_rate": 5e-5,
     "num_train_epochs": 2,
     "reprocess_input_data": True,
     "overwrite_output_dir": True,
