@@ -9,6 +9,18 @@ import pandas as pd
 from simpletransformers.classification import ClassificationModel
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 
+from argparse import ArgumentParser
+
+parser = ArgumentParser()
+parser.add_argument("-model_type", "--model_type", dest="model_type",
+                    help="model type")
+parser.add_argument("-model_name", "--model_name", dest="model_name",
+                    help="model name"
+                    )
+
+model_type = parser.parse_args().model_type
+model_name = parser.parse_args().model_name
+
 
 def f1_multiclass(labels, preds):
     return f1_score(labels, preds, average="micro")
@@ -53,13 +65,18 @@ model_args = {
     "overwrite_output_dir": True,
     "train_batch_size": 1,
     "eval_batch_size": 1,
-    "max_seq_length": 512
+    "max_seq_length": 1000,
+    "sliding_window": True,
+    "warmup_steps": 500,
+    "weight_decay": 0.01,
+    "evaluate_during_training": True,
+    "silent": True
 }
 
 model = ClassificationModel(
-    "roberta", "roberta-large", num_labels=len(train["first_sdg"].unique()), args=model_args
+    model_type, model_name, num_labels=len(train["first_sdg"].unique()), args=model_args
 )
-model.train_model(train)
+model.train_model(train, test)
 print("Training has finished.")
 
 results, model_outputs, predictions = model.eval_model(
@@ -67,7 +84,7 @@ results, model_outputs, predictions = model.eval_model(
 predictions = np.argmax(model_outputs, axis=-1).tolist()
 print(results)
 
-with open("/storage/2020-09-16_roberta_results.json", "w") as f:
+with open(f"/storage/2020-09-16_{model_type}_results.json", "w") as f:
     json.dump(results, f)
-with open("/storage/2020-09-16_roberta_predictions.json", "w") as f:
+with open(f"/storage/2020-09-16_{model_type}_predictions.json", "w") as f:
     json.dump(predictions, f)
