@@ -59,7 +59,6 @@ print("Data loaded successfully.")
 
 
 model_args = {
-    "learning_rate": 5e-5,
     "num_train_epochs": 2,
     "reprocess_input_data": True,
     "overwrite_output_dir": True,
@@ -67,16 +66,13 @@ model_args = {
     "eval_batch_size": 1,
     "max_seq_length": 1000,
     "sliding_window": True,
-    "warmup_steps": 500,
-    "weight_decay": 0.01,
-    "evaluate_during_training": True,
     "silent": True
 }
 
 model = ClassificationModel(
     model_type, model_name, num_labels=len(train["first_sdg"].unique()), args=model_args
 )
-model.train_model(train, eval_df=test)
+model.train_model(train)
 print("Training has finished.")
 
 results, model_outputs, predictions = model.eval_model(
